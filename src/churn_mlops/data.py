@@ -1,5 +1,7 @@
 from pathlib import Path
+
 import pandas as pd
+
 from churn_mlops.config import RAW_DATA_PATH
 
 
@@ -13,8 +15,8 @@ def load_data(path: Path | str = RAW_DATA_PATH) -> pd.DataFrame:
     df["TotalCharges"] = df["TotalCharges"].fillna(0)
 
     #Encoding 1/0 for the target variable
-    df["Churn"] = df["Churn"].map({"No": 0, "Yes": 1}) #TARGET
-
+    mapping = {"No": 0, "Yes": 1}
+    df["Churn"] = df["Churn"].map(mapping) #TARGET
     print(df.shape)
 
     return df

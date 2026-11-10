@@ -28,4 +28,5 @@ build-backend = "uv_build"
 dev = [
     "euporie>=2.10.4",
     "ipykernel>=7.4.0",
+    "seaborn>=0.13.2",
 ]
