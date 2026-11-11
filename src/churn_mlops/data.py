@@ -18,11 +18,11 @@ def load_data(path: Path | str = RAW_DATA_PATH) -> pd.DataFrame:
     #Encoding 1/0 for the target variable
     mapping = {"No": 0, "Yes": 1}
     df["Churn"] = df["Churn"].replace(mapping) #TARGET
-    print(df.shape)
+    print("Data Shape: ", df.shape)
 
     return df
 
 def split_data(df: pd.DataFrame, test_size=0.2, random_state=117):
     X = df.drop(columns=["Churn"])
-    y = df["Churn"]
+    y = df["Churn"].astype(int)
     return train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)

@@ -22,7 +22,7 @@ def build_preprocessor() -> ColumnTransformer:
     "Preps the transformers to be used in the pipeline"
 
     processor = ColumnTransformer([
-        ("scaler", StandardScaler, NUMERICAL_FEATURES),
+        ("scaler", StandardScaler(), NUMERICAL_FEATURES),
         ("onehot", OneHotEncoder(handle_unknown='ignore'), CATEGORICAL_FEATURES)
     ])
 
