@@ -1,5 +1,10 @@
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    f1_score,
+    roc_auc_score,
+)
 
 from churn_mlops.config import RAW_DATA_PATH
 from churn_mlops.data import load_data, split_data
@@ -13,17 +18,17 @@ print("y_train shape: ", y_train.shape)
 print("\nX_test shape: ", X_test.shape)
 print("y_test shape: ", y_test.shape)
 
-clf = RandomForestClassifier(n_estimators=100, random_state=117, class_weight="balanced", n_jobs=-1)
+clf = RandomForestClassifier(n_estimators=300, random_state=117, max_depth=8, class_weight="balanced", n_jobs=-1)
 
 processor = build_preprocessor()
 pipeline = build_pipeline(processor, clf)
 
 pipeline.fit(X_train, y_train)
 pred = pipeline.predict(X_test)
-prob = pipeline.predict_proba(X_test)
+prob = pipeline.predict_proba(X_test)[:,1]
 
-acc = accuracy_score(pred, y_test)
-f1 = f1_score(pred, y_test)
+report = classification_report(y_test, pred, target_names=["No Churn", "Churn"])
+auc = roc_auc_score(y_test, prob)
 
-print("accuracy: ", acc)
-print("f1: ", f1)
+print(report)
+print("AUC :", auc)
