@@ -18,7 +18,6 @@ def load_data(path: Path | str = RAW_DATA_PATH) -> pd.DataFrame:
     #Encoding 1/0 for the target variable
     mapping = {"No": 0, "Yes": 1}
     df["Churn"] = df["Churn"].replace(mapping) #TARGET
-    print("Data Shape: ", df.shape)
 
     return df
 
