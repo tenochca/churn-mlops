@@ -16,6 +16,7 @@ from churn_mlops.features import build_pipeline, build_preprocessor
 RANDOM_STATE = 117
 
 def evaluate(pipeline, X_test, y_test) -> dict[str, float]:
+    "Evaluates model on testing data"
     pred = pipeline.predict(X_test)
     prob = pipeline.predict_proba(X_test)[:, 1]
     return {
@@ -26,8 +27,7 @@ def evaluate(pipeline, X_test, y_test) -> dict[str, float]:
     }
 
 def train_and_log(clf: ClassifierMixin, run_name: str, params: dict | None = None, experiment: str = "churn"):
-
-
+    "Processes the data through the pipeline and trains the model, logging with mlflow"
     df = load_data(RAW_DATA_PATH)
 
     X_train, X_test, y_train, y_test = split_data(df)
