@@ -56,7 +56,7 @@ def train_and_log(clf: ClassifierMixin, run_name: str, params: dict | None = Non
         mlflow.sklearn.log_model(
             pipeline,
             name="model",
-            registered_model_name="churn_model"
+            registered_model_name="churn_model",
             skops_trusted_types=["sklearn.tree._tree.Tree"],
         )
 
