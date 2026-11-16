@@ -2,6 +2,7 @@ import mlflow
 import mlflow.sklearn
 from sklearn.base import ClassifierMixin
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     average_precision_score,
     precision_score,
@@ -52,21 +53,32 @@ def train_and_log(clf: ClassifierMixin, run_name: str, params: dict | None = Non
         metrics = evaluate(pipeline, X_test, y_test)
 
         mlflow.log_metrics(metrics)
-        mlflow.sklearn.log_model(pipeline, name="model", skops_trusted_types=["sklearn.tree._tree.Tree"],)
+        mlflow.sklearn.log_model(
+            pipeline,
+            name="model",
+            registered_model_name="churn_model"
+            skops_trusted_types=["sklearn.tree._tree.Tree"],
+        )
 
     return pipeline, metrics
 
 def main():
-    params = {
+    rf_params = {
         "n_estimators": 300,
         "max_depth": 8,
         "class_weight": "balanced",
         "random_state": RANDOM_STATE,
         "n_jobs": -1
     }
-    clf = RandomForestClassifier(**params)
-    _, metrics = train_and_log(clf, run_name="random_forest", params=params)
-    print(metrics)
+    log_reg_params = {
+        "max_iter": 1000,
+        "random_state": RANDOM_STATE,
+        "class_weight": "balanced"
+    }
+    log_reg = LogisticRegression(**log_reg_params)
+    rf = RandomForestClassifier(**rf_params)
+    _, rf_metrics = train_and_log(rf, run_name="random_forest", params=rf_params)
+    _, log_reg_metrics = train_and_log(log_reg, run_name="log_reg", params=log_reg_params)
 
 if __name__ == "__main__":
     main()
