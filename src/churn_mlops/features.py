@@ -1,6 +1,7 @@
 from typing import Any
 
 from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
@@ -22,6 +23,7 @@ def build_preprocessor() -> ColumnTransformer:
     "Preps the transformers to be used in the pipeline"
 
     processor = ColumnTransformer([
+        ("imputer", SimpleImputer(), NUMERICAL_FEATURES)
         ("scaler", StandardScaler(), NUMERICAL_FEATURES),
         ("onehot", OneHotEncoder(handle_unknown='ignore'), CATEGORICAL_FEATURES)
     ])
